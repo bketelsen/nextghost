@@ -11,6 +11,8 @@ const defaultOptions = withBundleAnalyzer({
     domains: [
       'localhost',
       'content.brian.dev',
+      'www.amazon.com',
+      'm.media-amazon.com',
       'github.com',
       'opengraph.githubassets.com',
       'images.unsplash.com',
