@@ -24,6 +24,8 @@ export default class MyDocument extends Document {
             title="brian.dev RSS Feed"
             href={`${resolve(processEnv.siteUrl, 'rss.xml')}`}
           />
+          <link rel="icon" href="/favicon.png" />
+
         </Head>
         <body {...{className: bodyClass}}>
           <script
