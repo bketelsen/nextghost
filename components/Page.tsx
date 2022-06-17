@@ -63,7 +63,7 @@ export const Page = ({ cmsData }: PageProps) => {
                               (max-width: 2110px) 2110px, 2000px
                             `}
                     {...featImg.dimensions}
-                  />
+                />
                 </figure>
               ) : (
                 page.feature_image && (

@@ -83,7 +83,7 @@ const excludePostOrPageBySlug = () => {
 // helpers
 export const createNextImage = async (url?: string | null): Promise<NextImage | undefined> => {
   if (!url) return undefined
-  const normalizedUrl = await normalizedImageUrl(url)
+   const normalizedUrl = await normalizedImageUrl(url)
   const dimensions = await imageDimensions(normalizedUrl)
   return (dimensions && { url: normalizedUrl, dimensions }) || undefined
 }

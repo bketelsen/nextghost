@@ -43,9 +43,10 @@ export interface Dimensions {
 
 export const imageDimensions = async (url: string | undefined | null, noCache?: boolean): Promise<Dimensions | null> => {
   if (!url) return null
-
+  console.log("imageDimensions", url)
   const cacheKey = await genCacheKey(url, noCache)
   const cached = getCache<Dimensions>(cacheKey)
+  if(cached) console.log("\t\tcached:", url)
   if (cached) return cached
 
   let width = 0
@@ -60,6 +61,7 @@ export const imageDimensions = async (url: string | undefined | null, noCache?: 
         read_timeout,
         response_timeout,
       })
+      console.log("\t\t", url, w, h)
       width = w
       height = h
       hasError = false
@@ -82,8 +84,9 @@ export const imageDimensions = async (url: string | undefined | null, noCache?: 
     }
   } while (hasError && retry < maxRetries)
   if (hasError) throw new Error(`images.ts: Bad network connection. Failed image probe after ${maxRetries} retries for url: ${url}.`)
-  if (0 === width + height) return null
 
+  if (0 === width + height) console.log("failed to get image dimensions", url)
+  if (0 === width + height) return null
   setCache(cacheKey, { width, height })
   return { width, height }
 }
@@ -110,6 +113,7 @@ export const imageDimensionsFromFile = async (file: string, noCache?: boolean) =
 const imageRoot = join(process.cwd(), 'public/images')
 
 export const normalizedImageUrl = async (url: string) => {
+  console.log("normalizedImageUrl:", url)
   const localhostRegExp = /^http:\/\/\w+(\.\w+)*(:[0-9]+)?\/?(\/.*)*\/(.*)$/
   const filename = url.match(localhostRegExp)?.reverse()[0]
 

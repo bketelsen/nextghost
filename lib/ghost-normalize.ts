@@ -184,8 +184,8 @@ const rewriteInlineImages = async (htmlAst: Node) => {
     }
 
     const { src } = node.properties
-    node.imageDimensions = imageDimensions(src)
-    nodes.push({ node, parent })
+    node.imageDimensions = imageDimensions(src, true)
+     nodes.push({ node, parent })
   })
 
   const dimensions = await Promise.all(nodes.map(({ node }) => node.imageDimensions))
@@ -195,12 +195,19 @@ const rewriteInlineImages = async (htmlAst: Node) => {
     node.imageDimensions = dimensions[i] as Dimensions
     const { width, height } = node.imageDimensions
     const aspectRatio = width / height
+    if (node.properties.width === undefined && node.properties.height === undefined) {
+      console.log("setting width and height")
+      node.properties.width = width
+      node.properties.height = height
+      console.log("New node", node)
+    }
     const flex = `flex: ${aspectRatio} 1 0`
     if (parent && parent.properties) {
       let parentStyle = parent.properties.style || []
       if (typeof parentStyle === 'string') parentStyle = [parentStyle]
       parent.properties.style = [...parentStyle, flex]
     }
+    console.log("Parent: ", parent)
   })
 
   return htmlAst
